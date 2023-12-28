@@ -10,3 +10,4 @@ Currently, two official plugins are available:
 
 ## Team
 - [Hanif Maghfur](https://github.com/hnifmaghfur)
+- [Eko Saputra](https://github.com/ekosaputra96)

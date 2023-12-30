@@ -6,6 +6,8 @@ import { Button, Col, Row, Form } from "react-bootstrap";
 function App() {
   const [value, setValue] = useState("");
   const [todo, setTodo] = useState([]);
+  const [isEditable, setIsEditable] = useState(false);
+  const [idx, setIdx] = useState("");
   const inputHandler = (e) => {
     setValue(e.target.value);
   };
@@ -28,6 +30,27 @@ function App() {
     setTodo(updatedTodo);
   };
 
+  const editHandler = (e) => {
+    const index = e.target.value;
+    setValue(todo[index]);
+    setIsEditable(true);
+    setIdx(index);
+  };
+
+  const updateHandler = (e) => {
+    // butuh index samo value
+    const updatedTodo = [...todo];
+
+    updatedTodo[idx] = value;
+
+    setTodo(updatedTodo);
+
+    setValue("");
+    setIdx("");
+    setIsEditable(false);
+    alert("update sucessfull");
+  };
+
   return (
     <>
       <div className="text-center bg-white">
@@ -46,13 +69,24 @@ function App() {
             />
           </Col>
           <Col sm={3}>
-            <Button
-              as="input"
-              type="submit"
-              value="Add"
-              className="m-3"
-              onClick={clickHandler}
-            />
+            {!isEditable && (
+              <Button
+                as="input"
+                type="submit"
+                value="Add"
+                className="m-3"
+                onClick={clickHandler}
+              />
+            )}
+            {isEditable && (
+              <Button
+                as="input"
+                type="submit"
+                value="Update"
+                className="m-3"
+                onClick={updateHandler}
+              />
+            )}
           </Col>
         </Row>
 
@@ -61,11 +95,18 @@ function App() {
             <div className="card-body">
               {item}{" "}
               <button
-                className="btn btn-danger sm float-end"
+                className="btn btn-danger float-end"
                 onClick={deleteHandler}
                 value={index}
               >
                 x
+              </button>
+              <button
+                className="btn btn-primary float-end mx-2"
+                onClick={editHandler}
+                value={index}
+              >
+                Edit
               </button>
             </div>
           </div>

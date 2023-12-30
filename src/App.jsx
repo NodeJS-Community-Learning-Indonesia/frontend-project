@@ -1,35 +1,78 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Button, Col, Row, Form } from "react-bootstrap";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [value, setValue] = useState("");
+  const [todo, setTodo] = useState([]);
+  const inputHandler = (e) => {
+    setValue(e.target.value);
+  };
+  const clickHandler = () => {
+    if (value == "") {
+      alert("jangan kosongin bang!!");
+      return;
+    }
+    setTodo([...todo, value]);
+    setValue("");
+  };
+
+  const deleteHandler = (e) => {
+    const index = e.target.value;
+
+    const updatedTodo = [...todo];
+
+    updatedTodo.splice(index, 1);
+
+    setTodo(updatedTodo);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="text-center bg-white">
+        <h1>Todo List Using React.JS</h1>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+
+      <div className="container mt-5 rounded py-2 px-2">
+        <Row>
+          <Col sm={9}>
+            <Form.Control
+              type="text"
+              placeholder="Input your list"
+              className="m-3"
+              onChange={inputHandler}
+              value={value}
+            />
+          </Col>
+          <Col sm={3}>
+            <Button
+              as="input"
+              type="submit"
+              value="Add"
+              className="m-3"
+              onClick={clickHandler}
+            />
+          </Col>
+        </Row>
+
+        {todo.map((item, index) => (
+          <div className="card m-3" key={index}>
+            <div className="card-body">
+              {item}{" "}
+              <button
+                className="btn btn-danger sm float-end"
+                onClick={deleteHandler}
+                value={index}
+              >
+                x
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
